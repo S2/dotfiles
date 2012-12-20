@@ -1,0 +1,24 @@
+snippet c
+    public class ${1} {
+        public $1(){
+            
+        }
+    }
+
+snippet a
+    public class ${1} extends Activity{
+        @Override
+        protected void onCreate(
+            android.os.Bundle savedInstanceState) {
+            setContentView(R.layout.user_get);
+            super.onCreate(savedInstanceState);
+        }
+    }
+
+snippet click
+    findViewById(R.id.${1}).setOnClickListener(new OnClickListener(){
+        @Override
+        public void onClick(View v) {
+        }
+    });
+

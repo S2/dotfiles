@@ -1,0 +1,6 @@
+--exec "perl -I/Users/shinichirousatou/wanon2/lib -Ilib -It/lib -MTest::Flatten -MTest::Name::FromLine"
+--color
+#--merge
+--timer
+-w
+-v

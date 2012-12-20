@@ -1,0 +1,219 @@
+snippet u
+    #!/usr/local/bin/perl
+    use 5.14.2;
+    use strict;
+    use warnings;
+    use utf8;
+
+snippet d
+    use Data::Dumper;
+    warn Dumper ${1}
+
+snippet s
+    sub ${1}{
+        my ($self , )  = @_;
+        my $args = ref $_[0] ? $_[0] :  { @_ };
+    }
+
+snippet st
+    subtest '${1}'=> sub {
+        done_testing;
+    };
+
+snippet dt
+    '%Y-%m-%d %H:%M:%S'
+
+snippet date
+    '%Y-%m-%d'
+
+snippet time
+    '%H:%M:%S'
+
+snippet vp
+    $c->view_param(${1} => [map{$_->get_columns}@$$1]);
+
+snippet r
+    [map{$_->get_columns}@$${1}];
+
+snippet n
+    sub new {
+        my $class = shift;
+        my $args = ref $_[0] ? $_[0] : +{@_};
+
+        bless $args, $class;
+    }
+
+snippet ex
+    use parent qw(Exporter);
+    our @EXPORT_OK = qw//;
+
+snippet plack
+    use Plack::Request;
+    sub {
+        my $req = Plack::Request->new($_[0]);
+        given ($req->path) {
+            when ('/') {
+                $req->param('');
+                return [200, ["Content-Type" => "text/html"], ['200 OK']];
+            }
+        }
+        return [404, ["Content-Type" => "text/plain"], ['404 Not Found']];
+    };
+
+snippet write
+    open my $fh , '>' , '${1}' or die 'cant open file !';
+
+snippet read
+    open my $fh , '>' , '${1}' or die 'cant open file !';
+    while(<$fh>){
+
+    }
+
+snippet any
+    any '/' => sub {
+        my ($c, $args, $p) = @_;
+    };
+
+snippet post
+    post '/' => sub {
+        my ($c, $args, $p) = @_;
+    };
+
+snippet hook
+    hook '/' => sub {
+        my ($c, $args, $p) = @_;
+    };
+
+snippet file
+    use Path::Class qw(file);
+    my @lines = file(__FILE__)->dir->file('/path/to/file')->slurp;
+
+snippet r200
+    [ 200, ['Content-Type', 'text/plain'], ['200 OK'] ]
+
+snippet r404
+    [ 404, ['Content-Type', 'text/plain'], ['404 Not Found'] ]
+
+snippet now
+    localtime(time)->strftime('%Y-%m-%d %H:%M:%S')
+
+snippet create
+    our %CAPTURE_REPLACE = (
+        id => '\d+',
+    );
+    my @create_columns = qw//;
+    my @modify_columns = qw//;
+
+    my $create_start_url = $PATH_PREFIX . '/create/';
+    my $modify_start_url = $PATH_PREFIX . '/modify/%s/';
+
+    any '/enable/:id' => sub{
+        my ($c,$args,$p) = @_;
+        my $id = $args->{id};
+        my $row = $c->dao('default')->single('${1}' , {id => $id});
+        $row->is_enabled ? 
+            $c->dao('default')->update('$1' , {is_enabled => 0 } , {id => $id}) : 
+            $c->dao('default')->update('$1' , {is_enabled => 1 } , {id => $id});
+        return $c->redirect($PATH_PREFIX . '/list');
+    };
+
+    any '/list' => sub{
+        my ($c,$args,$p) = @_;
+        my $id = $args->{id};
+        my $row = $c->dao('slave_db')->search('$1')->all;
+        $c->view_param(list => [map{$_->get_columns}@$row]);
+    };
+
+    any '/delete/:id' => sub{
+        my ($c,$args,$p) = @_;
+        my $id = $args->{id};
+        my $row = $c->dao('default')->delete('$1' ,{id => $id});
+    };
+
+    any '/create/' => sub{
+        my ($c,$args,$p) = @_;
+    
+        $c->view_param($p->as_hashref);
+        map{
+            if(defined $c->session->get($_)){
+                $c->view_param($_, $c->session->get($_));
+                $c->session->remove($_);
+            }
+            if($c->session->get("error_$_")){
+                $c->view_param("error_$_", $c->session->get("error_$_"));
+                $c->session->remove("error_$_");
+            }
+        }@create_columns;
+    };
+    
+    any '/create/confirm' => sub{
+        my ($c,$args,$p) = @_;
+        
+        $p->each(sub {$c->session->set($_[0] ,$_[1]);});
+        
+        if($c->has_error){
+            while(my ($key , $value) = each(%{$c->{error_message}})){
+                $c->session->set($key ,$value);
+            }
+            return $c->redirect($create_start_url);
+        }
+        $c->view_param($p->as_hashref);
+    };
+    
+    any '/create/done' => sub{
+        my ($c,$args,$p) = @_;
+        
+        my $values = {};
+        map{
+            $values->{$_} = $c->session->get($_);
+            $c->session->remove($_);
+        }@create_columns;
+        $c->model('${2}')->insert($values);
+    };
+
+    any '/modify/:id/' => sub{
+        my ($c,$args,$p) = @_;
+        my $id = $args->{id};
+    
+        my $row = $c->dao('slave_db')->single('$1' , {id => $id});
+        $c->view_param($row->get_columns);
+        $c->view_param($p->as_hashref);
+        map{
+            if(defined $c->session->get($_)){
+                $c->view_param($_, $c->session->get($_));
+                $c->session->remove($_);
+            }
+            if(defined $c->session->get("error_$_")){
+                $c->view_param("error_$_", $c->session->get("error_$_"));
+                $c->session->remove("error_$_");
+            }
+        }@modify_columns;
+    };
+    
+    any '/modify/:id/confirm' => sub{
+        my ($c,$args,$p) = @_;
+        my $id = $args->{id};
+        
+        $p->each(sub {$c->session->set($_[0] ,$_[1]);});
+        
+        if($c->has_error){
+            while(my ($key , $value) = each(%{$c->{error_message}})){
+                $c->session->set($key ,$value);
+            }
+            return $c->redirect(sprintf($modify_start_url , $id));
+        }
+        $c->view_param($p->as_hashref);
+    };
+    
+    any '/modify/:id/done' => sub{
+        my ($c,$args,$p) = @_;
+        my $id = $args->{id};
+        
+        my $values = {};
+        map{
+            $values->{$_} = $c->session->get($_);
+            $c->session->remove($_);
+        }@modify_columns;
+        $c->model('$2')->update($values, {id => $id});
+    };
+
