@@ -21,7 +21,7 @@ NeoBundle 'git://github.com/edsono/vim-matchit'
 NeoBundle 'git://github.com/Shougo/vimproc.git'
 NeoBundle 'VimClojure'
 NeoBundle 'git://github.com/vim-scripts/TwitVim'
-NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
+NeoBundle 'https://github.com/Lokaltog/vim-powerline.git'
 NeoBundle 'git://github.com/dmitry-ilyashevich/vim-typescript.git'
 NeoBundle 'git://github.com/vim-scripts/sudo.vim.git'
 NeoBundle 'https://github.com/tpope/vim-fugitive'
@@ -31,6 +31,9 @@ NeoBundle 'git://github.com/vim-scripts/dbext.vim.git'
 NeoBundle 'git://github.com/bpowell/vim-android.git'
 NeoBundle 'git://github.com/vim-scripts/javacomplete.git'
 NeoBundle 'git://github.com/vim-scripts/java.vim.git'
+NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
+
+NeoBundle "git://github.com/tsukkee/unite-tag.git"
 
 filetype plugin on
 filetype indent on
@@ -57,9 +60,11 @@ source $HOME/.bundle/vim-matchit/plugin/matchit.vim
 filetype on
 au BufRead,BufNewFile *.cpp setfiletype cpp
 au BufRead,BufNewFile *.pl,*.cgi,*.pm,*.psgi setfiletype perl
+au BufRead,BufNewFile *.ts setfiletype typescript
 autocmd FileType pl,perl,cgi,pm,psgi,t :compiler perl
 autocmd FileType html,htm set ts=4 sw=4
 autocmd FileType rb  :compiler ruby
+autocmd FileType ts :compiler tsc 
 autocmd Bufenter *.rb set ts=2 shiftwidth=2
 autocmd Bufenter *.js,*.tt set ts=4 sw=4
 autocmd Bufenter *.tt,*.tt2 setf tt2html
@@ -71,7 +76,6 @@ autocmd QuickFixCmdPost    l* nested lwindow
 "set foldlevel=1
 
 set clipboard+=unnamed,autoselect
-let twitvim_login_b64="czJvc2EuY29tOmxpdGFzMg=="
 let twitvim_count = 160
 
 set laststatus=2
@@ -79,8 +83,12 @@ set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%04l,%04v]\ %=\ %{fu
 
 highlight statusLine guifg=darkblue guibg=blue gui=none ctermfg=blue ctermbg=grey cterm=none
 
-let g:Powerline_stl_path_style = 'relative'
-let g:Powerline_colorscheme='skwp'
+let g:Powerline_symbols = 'fancy'
+set guifont='SourceCodePro-Regular-Powerline'
+" let g:Powerline_stl_path_style = 'relative'
+" let g:Powerline_colorscheme='skwp'
+
+highlight vimshellPrompt guifg=darkblue guibg=blue gui=none ctermfg=blue ctermbg=grey cterm=none
 
 hi Folded ctermfg=black ctermbg=grey cterm=bold
 
@@ -196,7 +204,7 @@ autocmd Bufenter *.m :setlocal foldexpr=GetCFold()
 autocmd Bufenter *.m :setlocal foldmethod=expr
 
 set showtabline=1
-map <S-tab> <S-,><S-,>
+nmap <S-tab> <S-,><S-,>
 map <C-i> <S-.><S-.>
 imap <C-t> <ESC>:tabe<CR>:VimFiler -split -winwidth=35 -no-quit -simple<CR>:wincmd l<CR>
 nmap <C-t> :tabe<CR>:VimFiler -split -winwidth=35 -no-quit -simple<CR>:wincmd l<CR>
@@ -213,8 +221,6 @@ map <S-s> <DOWN><DOWN>
 map <S-d> <RIGHT><RIGHT>
 
 set encoding=utf-8
-let g:Powerline_symbols = 'fancy'
-highlight vimshellPrompt guifg=darkblue guibg=blue gui=none ctermfg=blue ctermbg=grey cterm=none
 
 nmap q :q<CR>
 
@@ -244,3 +250,49 @@ let dbext_default_host="localhost"
 let dbext_default_buffer_lines=1000
 
 let g:quickrun_config = {'*': {'hook/time/enable': '1'},}
+
+" path にヘッダーファイルのディレクトリを追加することで
+" neocomplcache が include 時に tag ファイルを作成してくれる
+set path+=$LIBSTDCPP
+set path+=$BOOST_LATEST_ROOT
+
+" neocomplcache が作成した tag ファイルのパスを tags に追加する
+function! s:TagsUpdate()
+    " include している tag ファイルが毎回同じとは限らないので毎回初期化
+    setlocal tags=
+    for filename in neocomplcache#sources#include_complete#get_include_files(bufnr('%'))
+        execute "setlocal tags+=".neocomplcache#cache#encode_name('tags_output', filename)
+    endfor
+endfunction
+
+
+command!
+    \ -nargs=? PopupTags
+    \ call <SID>TagsUpdate()
+    \ |Unite tag:<args>
+
+function! s:get_func_name(word)
+    let end = match(a:word, '<\|[\|(')
+    return end == -1 ? a:word : a:word[ : end-1 ]
+endfunction
+
+
+" カーソル下のワード(word)で絞り込み
+noremap <silent> <C-m> :<C-u>execute "PopupTags ".expand('<cword>')<CR>
+noremap <silent> <C-]> :<C-u>execute "PopupTags ".expand('<cword>')<CR>
+
+" カーソル下のワード(WORD)で ( か < か [ までが現れるまでで絞り込み
+" 例)
+" boost::array<std::stirng... → boost::array で絞り込み
+" noremap <silent> G<C-]> :<C-u>execute "PopupTags "
+"     \.substitute(<SID>get_func_name(expand('<cWORD>')), '\:', '\\\:', "g")<CR>
+
+" Uniteを開く時、垂直分割で開く
+let g:unite_winheight=10
+" ウィンドウを分割して開く
+au FileType unite nnoremap <silent> <buffer> <expr> <C-t> unite#do_action('tabopen')
+au FileType unite inoremap <silent> <buffer> <expr> <C-t> unite#do_action('tabopen')
+
+au FileType unite nnoremap <silent> <buffer> <expr> <C-e> unite#do_action('vsplit')
+au FileType unite inoremap <silent> <buffer> <expr> <C-e> unite#do_action('vsplit')
+

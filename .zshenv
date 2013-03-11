@@ -42,9 +42,9 @@ alias plack="plackup script/app.psgi -I../wanon2/lib"
 alias plack20000="plackup script/app.psgi -I../wanon2/lib -p 20000"
 alias vim="vim -p -c 'VimFiler -split -winwidth=35 -no-quit -simple' -c 'wincmd l'"
 alias vv="vim"
+alias v="vim"
 alias :wq="exit"
 alias :q="exit"
-alias rewriteer="cp /Users/shinichirousatou/Documents/workspace/hoge/論理ER.erm doc/"
 alias gm="git merge"
 alias ga="git add"
 alias gp="git push"
@@ -53,7 +53,6 @@ alias gl="git log"
 alias gco="git checkout"
 alias gcp="git checkout"
 
-eval "cd ~/shirow-quiz"
 zle -A .backward-kill-word vi-backward-kill-word
 zle -A .backward-delete-char vi-backward-delete-char
 
@@ -91,11 +90,16 @@ setopt prompt_subst
 PROMPT='%F{green}%W %f %(5~,%-2~/.../%2~,%~) `rprompt-git-current-branch`# '
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-[[ -s "/Users/sample1/.rvm/scripts/rvm" ]] && source "/Users/sample1/.rvm/scripts/rvm"
+[[ -s "/Users/shinichirousatou/.rvm/scripts/rvm" ]] && source "/Users/shinichirousatou/.rvm/scripts/rvm"
 
 PATH=$PATH:/usr/local/mysql-5.5.27/bin/
+PATH=$PATH:/usr/local/mysql-5.5.27/scripts/
+PATH=$PATH:/usr/local/pgsql/bin/
 PATH=$PATH:/usr/local/node/bin/
+PATH=$PATH:/usr/local/bin/
 export PATH
+PGDATA=/usr/local/pgsql/bin/data
+export PGDATA
 
 BOOST_PATH=/usr/local/boost
 export BOOST_PATH
