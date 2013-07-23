@@ -9,3 +9,6 @@ nmap <buffer> f <Plug>(vimfiler_find)
 
 nmap <buffer> <Left> <Plug>(vimfiler_expand_tree)
 
+nmap <buffer> l <Plug>(vimfiler_expand_tree)
+nmap <buffer> j <Plug>(vimfiler_expand_tree)
+

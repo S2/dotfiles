@@ -36,6 +36,7 @@ function cd(){
 zstyle ':completion:*' list-separator '-->'
 alias ls="ls -atG"
 alias lls="ls"
+alias gb="git branch" 
 alias gd="git diff" 
 alias gs="git status"
 alias plack="plackup script/app.psgi -I../wanon2/lib"
@@ -89,23 +90,36 @@ function rprompt-git-current-branch {
 setopt prompt_subst
 PROMPT='%F{green}%W %f %(5~,%-2~/.../%2~,%~) `rprompt-git-current-branch`# '
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-[[ -s "/Users/shinichirousatou/.rvm/scripts/rvm" ]] && source "/Users/shinichirousatou/.rvm/scripts/rvm"
-
 PATH=$PATH:/usr/local/mysql-5.5.27/bin/
 PATH=$PATH:/usr/local/mysql-5.5.27/scripts/
 PATH=$PATH:/usr/local/pgsql/bin/
 PATH=$PATH:/usr/local/node/bin/
 PATH=$PATH:/usr/local/bin/
+PATH=$PATH:/usr/local/yasm/bin
+PATH=$PATH:/usr/local/libvpx/bin
+PATH=$PATH:/usr/local/ffmpeg/bin
+PATH=$PATH:/usr/local/libvpx/include/
 export PATH
+
 PGDATA=/usr/local/pgsql/bin/data
 export PGDATA
 
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
+
 BOOST_PATH=/usr/local/boost
 export BOOST_PATH
+
+export GIT_MERGE_AUTOEDIT=no
 
 source ~/perl5/perlbrew/etc/bashrc
 source ~/.phpbrew/bashrc
 
 GTEST_DIR=/Users/shinichirousatou/gtesta-1.6.0
 
+eval 'cd /Users/shinichirousatou/kuroneco'
+
+if [ -d $HOME/.rbenv/bin ]; then
+    export RBENV_ROOT=$HOME/.rbenv
+    export PATH="$RBENV_ROOT/bin:$PATH"
+    eval "$(rbenv init -)"
+fi

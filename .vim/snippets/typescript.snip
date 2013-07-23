@@ -1,0 +1,17 @@
+snippet c
+	/// <reference path="jquery.d.ts" />
+	
+	interface ${1}Option{
+	}
+	
+	var selfClass: $1;
+	class $1{
+		options:$1Option;
+		constructor(options:$1Option){
+			this.options = options;
+		
+			selfClass = this;
+		}
+		
+		private FUNCTIONNAME(){
+	}

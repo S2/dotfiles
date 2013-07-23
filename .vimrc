@@ -22,11 +22,13 @@ NeoBundle 'git://github.com/Shougo/vimproc.git'
 NeoBundle 'VimClojure'
 NeoBundle 'git://github.com/vim-scripts/TwitVim'
 NeoBundle 'https://github.com/Lokaltog/vim-powerline.git'
-NeoBundle 'git://github.com/dmitry-ilyashevich/vim-typescript.git'
+NeoBundle 'https://github.com/leafgarland/typescript-vim'
 NeoBundle 'git://github.com/vim-scripts/sudo.vim.git'
 NeoBundle 'https://github.com/tpope/vim-fugitive'
 NeoBundle 'https://github.com/motemen/git-vim'
 NeoBundle 'git://github.com/vim-scripts/dbext.vim.git'
+NeoBundle 'http://github.com/xolox/vim-lua-ftplugin'
+NeoBundle 'https://github.com/vim-scripts/nginx.vim.git'
 
 NeoBundle 'git://github.com/bpowell/vim-android.git'
 NeoBundle 'git://github.com/vim-scripts/javacomplete.git'
@@ -34,6 +36,7 @@ NeoBundle 'git://github.com/vim-scripts/java.vim.git'
 NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
 
 NeoBundle "git://github.com/tsukkee/unite-tag.git"
+NeoBundle "https://github.com/tyru/current-func-info.vim.git"
 
 filetype plugin on
 filetype indent on
@@ -61,10 +64,14 @@ filetype on
 au BufRead,BufNewFile *.cpp setfiletype cpp
 au BufRead,BufNewFile *.pl,*.cgi,*.pm,*.psgi setfiletype perl
 au BufRead,BufNewFile *.ts setfiletype typescript
+au BufRead,BufNewFile *.conf setfiletype nginx 
+au BufRead,BufNewFile *.lua setfiletype lua 
 autocmd FileType pl,perl,cgi,pm,psgi,t :compiler perl
 autocmd FileType html,htm set ts=4 sw=4
 autocmd FileType rb  :compiler ruby
-autocmd FileType ts :compiler tsc 
+"autocmd FileType ts :compiler tsc 
+au BufRead,BufNewFile *.ts  set filetype=typescript
+
 autocmd Bufenter *.rb set ts=2 shiftwidth=2
 autocmd Bufenter *.js,*.tt set ts=4 sw=4
 autocmd Bufenter *.tt,*.tt2 setf tt2html
@@ -76,10 +83,9 @@ autocmd QuickFixCmdPost    l* nested lwindow
 "set foldlevel=1
 
 set clipboard+=unnamed,autoselect
-let twitvim_count = 160
 
 set laststatus=2
-set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%04l,%04v]\ %=\ %{fugitive#statusline()}
+set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%04l,%04v]\ %=\ %{fugitive#statusline()}\ [%{cfi#get_func_name()}()]
 
 highlight statusLine guifg=darkblue guibg=blue gui=none ctermfg=blue ctermbg=grey cterm=none
 
@@ -113,8 +119,8 @@ let g:NeoComplCache_DictionaryFileTypeLists = {
 " Define Keybinds.
 
 " for snippets
-imap <C-a> <Plug>(neocomplcache_snippets_expand)
-smap <C-a> <Plug>(neocomplcache_snippets_expand)
+imap <C-a> <Plug>(neosnippet_jump_or_expand)
+smap <C-a> <Plug>(neosnippet_jump_or_expand)
 let g:neocomplcache_disable_auto_complete = 1
 let g:neocomplcache_max_list = 30
 
@@ -149,7 +155,7 @@ let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_safe_mode_by_default=0
 
 function GetPerlFold()
-    if getline(v:lnum) =~ '^\s*sub\s' || getline(v:lnum) =~ '^\s*any\s'  || getline(v:lnum) =~ '^\s*post\s'  || getline(v:lnum) =~ '^\s*hook\s'
+    if getline(v:lnum) =~ '^\s*sub\s' || getline(v:lnum) =~ '^\s*any\s'  || getline(v:lnum) =~ '^\s*post\s'  || getline(v:lnum) =~ '^\s*hook\s' || getline(v:lnum) =~ '^\s*any\s' || getline(v:lnum) =~ '^\s*subtest\s' || getline(v:lnum) =~ '^\s*get\s'
         return ">1"
     elseif getline(v:lnum) =~ '^\};\s*$'
         let my_perlnum = v:lnum
@@ -165,7 +171,7 @@ function GetPerlFold()
                 return "<1"
             endif
         endwhile
-    elseif getline(v:lnum) =~ '\}\s*$'
+    elseif getline(v:lnum) =~ '\}\s*$' 
         let my_perlnum = v:lnum
         let my_perlmax = line("$")
         while (1)
@@ -212,14 +218,19 @@ nmap <S-,><S-,> :tabprevious<cr>
 imap <S-,><S-,> <ESC>:tabprevious<cr>
 nmap <S-.><S-.> :tabn<CR>
 
-nmap <C-g> :tabe<CR>:VimFiler -split -winwidth=35 -no-quit -simple<CR>:wincmd l<CR>:VimShell<CR>
-imap <C-g> <ESC>:tabe<CR>:VimFiler -split -winwidth=35 -no-quit -simple<CR>:wincmd l<CR>:VimShell<CR>
+"nmap <C-g> :tabe<CR>:VimFiler -split -winwidth=35 -no-quit -simple<CR>:wincmd l<CR>:VimShell<CR>
+"imap <C-g> <ESC>:tabe<CR>:VimFiler -split -winwidth=35 -no-quit -simple<CR>:wincmd l<CR>:VimShell<CR>
 
 map <S-w> <UP><UP>
 map <S-a> <left><LEFT>
 map <S-s> <DOWN><DOWN>
 map <S-d> <RIGHT><RIGHT>
 
+map i <UP>
+map j <left>
+map k <DOWN>
+nnoremap <silent> <l> @=(foldlevel('.')?'za':"\<RIGHT>")<CR>
+nmap h :
 set encoding=utf-8
 
 nmap q :q<CR>
@@ -245,7 +256,7 @@ let dbext_default_profile=""
 let dbext_default_type="MYSQL"
 let dbext_default_user="root"
 let dbext_default_passwd=""
-let dbext_default_dbname="shirowquiz"
+let dbext_default_dbname="kuroneco"
 let dbext_default_host="localhost"
 let dbext_default_buffer_lines=1000
 
