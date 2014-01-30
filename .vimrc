@@ -37,6 +37,7 @@ NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
 
 NeoBundle "git://github.com/tsukkee/unite-tag.git"
 NeoBundle "https://github.com/tyru/current-func-info.vim.git"
+NeoBundle "https://github.com/mattn/gist-vim.git"
 
 filetype plugin on
 filetype indent on
@@ -56,7 +57,7 @@ set ruler
 set cmdheight=2
 set title
 set smartindent
-"colorscheme darkblue
+colorscheme darkblue
 colorscheme wombat
 source $HOME/.bundle/vim-matchit/plugin/matchit.vim
 
@@ -66,6 +67,7 @@ au BufRead,BufNewFile *.pl,*.cgi,*.pm,*.psgi setfiletype perl
 au BufRead,BufNewFile *.ts setfiletype typescript
 au BufRead,BufNewFile *.conf setfiletype nginx 
 au BufRead,BufNewFile *.lua setfiletype lua 
+au BufRead,BufNewFile *.js setfiletype javascript
 autocmd FileType pl,perl,cgi,pm,psgi,t :compiler perl
 autocmd FileType html,htm set ts=4 sw=4
 autocmd FileType rb  :compiler ruby
@@ -83,6 +85,8 @@ autocmd QuickFixCmdPost    l* nested lwindow
 "set foldlevel=1
 
 set clipboard+=unnamed,autoselect
+let twitvim_login_b64="czJvc2EuY29tOmxpdGFzMg=="
+let twitvim_count = 160
 
 set laststatus=2
 set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%04l,%04v]\ %=\ %{fugitive#statusline()}\ [%{cfi#get_func_name()}()]
@@ -195,6 +199,48 @@ endfunction
 
 autocmd FileType pl,perl,cgi,pm,psgi,t :setlocal foldexpr=GetPerlFold()
 autocmd FileType pl,perl,cgi,pm,psgi,t :setlocal foldmethod=expr
+
+function GetJSFold()
+    if getline(v:lnum) =~ '^\s\{1,8}function' || getline(v:lnum) =~ '^.*:\s*function'  
+        return ">1"
+    elseif getline(v:lnum) =~ '^\};\s*$'
+        let my_perlnum = v:lnum
+        let my_perlmax = line("$")
+        while (1)
+            let my_perlnum = my_perlnum + 1
+            if my_perlnum > my_perlmax
+                return "<1"
+            endif
+            let my_perldata = getline(my_perlnum)
+            if my_perldata =~ '^\s*\(\#.*\)\?$'
+            else
+                return "<1"
+            endif
+        endwhile
+    elseif getline(v:lnum) =~ '\}\s*$' 
+        let my_perlnum = v:lnum
+        let my_perlmax = line("$")
+        while (1)
+            let my_perlnum = my_perlnum + 1
+            if my_perlnum > my_perlmax
+                return "<1"
+            endif
+            let my_perldata = getline(my_perlnum)
+            if my_perldata =~ '^\s*\(\#.*\)\?$'
+                " do nothing
+            elseif my_perldata =~ '^\s*sub\s'
+                return "<1"
+            else
+                return "="
+            endif
+        endwhile
+    else
+        return "="
+    endif
+endfunction
+
+autocmd FileType javascript :setlocal foldexpr=GetJSFold()
+autocmd FileType javascript :setlocal foldmethod=expr
 
 function GetCFold()
     if getline(v:lnum) =~ '^-' || getline(v:lnum) =~ '^+' 

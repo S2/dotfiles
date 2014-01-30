@@ -28,6 +28,8 @@ setopt hist_no_store         # historyコマンドは履歴に登録しない
 setopt hist_reduce_blanks    # 余分な空白は詰めて記録
 zstyle ':completion:*:default' menu select
 
+bindkey ^R history-incremental-search-backward
+
 #cdを打ったら自動的にlsを打ってくれる関数
 function cd(){
     builtin cd $@ && ls;
@@ -46,6 +48,7 @@ alias vv="vim"
 alias v="vim"
 alias :wq="exit"
 alias :q="exit"
+alias rewriteer="cp /Users/shinichirousatou/Documents/workspace/hoge/論理ER.erm doc/"
 alias gm="git merge"
 alias ga="git add"
 alias gp="git push"
@@ -53,6 +56,7 @@ alias gc="git commit"
 alias gl="git log"
 alias gco="git checkout"
 alias gcp="git checkout"
+alias re="sudo supervisorctl restart plack; tail -f /var/log/supervisor/plack/error.txt"
 
 zle -A .backward-kill-word vi-backward-kill-word
 zle -A .backward-delete-char vi-backward-delete-char
@@ -90,8 +94,8 @@ function rprompt-git-current-branch {
 setopt prompt_subst
 PROMPT='%F{green}%W %f %(5~,%-2~/.../%2~,%~) `rprompt-git-current-branch`# '
 
-PATH=$PATH:/usr/local/mysql-5.5.27/bin/
-PATH=$PATH:/usr/local/mysql-5.5.27/scripts/
+PATH=$PATH:/var/mysql/bin/
+PATH=$PATH:/var/mysql/scripts/
 PATH=$PATH:/usr/local/pgsql/bin/
 PATH=$PATH:/usr/local/node/bin/
 PATH=$PATH:/usr/local/bin/
@@ -99,12 +103,20 @@ PATH=$PATH:/usr/local/yasm/bin
 PATH=$PATH:/usr/local/libvpx/bin
 PATH=$PATH:/usr/local/ffmpeg/bin
 PATH=$PATH:/usr/local/libvpx/include/
+PATH=$PATH:/Applications/eclipse/android-sdk-macosx/platform-tools
 export PATH
 
 PGDATA=/usr/local/pgsql/bin/data
 export PGDATA
 
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
+
+export AWS_RDS_HOME=/usr/local/bin/RDSCli
+export PATH=$PATH:$AWS_RDS_HOME/bin
+
+export AWS_CREDENTIAL_FILE=~/cretential
+
+export JAVA_HOME=`/usr/libexec/java_home -v 1.6`
 
 BOOST_PATH=/usr/local/boost
 export BOOST_PATH
