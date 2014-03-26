@@ -1,5 +1,6 @@
 syntax on
 
+let perlpath='/Users/shinichirousatou/perl5/perlbrew/perls/perl-5.16.2'
 set nocompatible
 filetype off
 
@@ -8,10 +9,11 @@ if has('vim_starting')
     call neobundle#rc(expand('~/.bundle'))
 endif
 
-NeoBundle 'git://github.com/vim-perl/vim-perl.git'
+NeoBundle 'https://github.com/vim-perl/vim-perl'
 NeoBundle 'git://github.com/hotchpotch/perldoc-vim'
 NeoBundle 'git://github.com/Shougo/neocomplcache'
 NeoBundle 'git://github.com/Shougo/neosnippet'
+NeoBundle 'https://github.com/S2/neosnippet-snippets.git'
 NeoBundle 'git://github.com/Shougo/unite.vim'
 NeoBundle 'git://github.com/Shougo/vimfiler'
 NeoBundle 'git://github.com/Shougo/vimshell'
@@ -27,6 +29,7 @@ NeoBundle 'git://github.com/vim-scripts/sudo.vim.git'
 NeoBundle 'https://github.com/tpope/vim-fugitive'
 NeoBundle 'https://github.com/motemen/git-vim'
 NeoBundle 'git://github.com/vim-scripts/dbext.vim.git'
+NeoBundle 'http://github.com/xolox/vim-misc.git'
 NeoBundle 'http://github.com/xolox/vim-lua-ftplugin'
 NeoBundle 'https://github.com/vim-scripts/nginx.vim.git'
 
@@ -68,25 +71,23 @@ au BufRead,BufNewFile *.ts setfiletype typescript
 au BufRead,BufNewFile *.conf setfiletype nginx 
 au BufRead,BufNewFile *.lua setfiletype lua 
 au BufRead,BufNewFile *.js setfiletype javascript
+au BufRead,BufNewFile *.tt,*.tt2 setfiletype html
+
 autocmd FileType pl,perl,cgi,pm,psgi,t :compiler perl
 autocmd FileType html,htm set ts=4 sw=4
 autocmd FileType rb  :compiler ruby
-"autocmd FileType ts :compiler tsc 
-au BufRead,BufNewFile *.ts  set filetype=typescript
 
 autocmd Bufenter *.rb set ts=2 shiftwidth=2
 autocmd Bufenter *.js,*.tt set ts=4 sw=4
-autocmd Bufenter *.tt,*.tt2 setf tt2html
 
 autocmd QuickFixCmdPost [^l]* nested cwindow
 autocmd QuickFixCmdPost    l* nested lwindow
+"autocmd FileType ts :compiler tsc 
 
 "let perl_fold=1
 "set foldlevel=1
 
 set clipboard+=unnamed,autoselect
-let twitvim_login_b64="czJvc2EuY29tOmxpdGFzMg=="
-let twitvim_count = 160
 
 set laststatus=2
 set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%04l,%04v]\ %=\ %{fugitive#statusline()}\ [%{cfi#get_func_name()}()]
@@ -201,7 +202,7 @@ autocmd FileType pl,perl,cgi,pm,psgi,t :setlocal foldexpr=GetPerlFold()
 autocmd FileType pl,perl,cgi,pm,psgi,t :setlocal foldmethod=expr
 
 function GetJSFold()
-    if getline(v:lnum) =~ '^\s\{1,8}function' || getline(v:lnum) =~ '^.*:\s*function'  
+    if getline(v:lnum) =~ '^\s\{1,8}function' || getline(v:lnum) =~ '^.*:\s*function' || getline(v:lnum) =~ '^.*=\s*function'  
         return ">1"
     elseif getline(v:lnum) =~ '^\};\s*$'
         let my_perlnum = v:lnum
@@ -241,6 +242,48 @@ endfunction
 
 autocmd FileType javascript :setlocal foldexpr=GetJSFold()
 autocmd FileType javascript :setlocal foldmethod=expr
+
+function GetTSFold()
+    if getline(v:lnum) =~ '^\s\{1,8}public' || getline(v:lnum) =~ '^\s\{1,8}private'
+        return ">1"
+    elseif getline(v:lnum) =~ '^\s\{0,8}\}\s*$'
+        let my_perlnum = v:lnum
+        let my_perlmax = line("$")
+        while (1)
+            let my_perlnum = my_perlnum + 1
+            if my_perlnum > my_perlmax
+                return "<1"
+            endif
+            let my_perldata = getline(my_perlnum)
+            if my_perldata =~ '^\s*\(\#.*\)\?$'
+            else
+                return "<1"
+            endif
+        endwhile
+    elseif getline(v:lnum) =~ '^\s\{0,8}\};\s*$'
+        let my_perlnum = v:lnum
+        let my_perlmax = line("$")
+        while (1)
+            let my_perlnum = my_perlnum + 1
+            if my_perlnum > my_perlmax
+                return "<1"
+            endif
+            let my_perldata = getline(my_perlnum)
+            if my_perldata =~ '^\s*\(\#.*\)\?$'
+                " do nothing
+            elseif my_perldata =~ '^\s*sub\s'
+                return "<1"
+            else
+                return "="
+            endif
+        endwhile
+    else
+        return "="
+    endif
+endfunction
+
+autocmd FileType typescript :setlocal foldexpr=GetTSFold()
+autocmd FileType typescript :setlocal foldmethod=expr
 
 function GetCFold()
     if getline(v:lnum) =~ '^-' || getline(v:lnum) =~ '^+' 
