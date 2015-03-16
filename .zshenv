@@ -38,9 +38,11 @@ function cd(){
 zstyle ':completion:*' list-separator '-->'
 alias ls="ls -atG"
 alias lls="ls"
+alias l="ls"
 alias gb="git branch" 
 alias gd="git diff" 
 alias gs="git status"
+alias gcp="git cherry-pick"
 alias plack="plackup script/app.psgi -I../wanon2/lib"
 alias plack20000="plackup script/app.psgi -I../wanon2/lib -p 20000"
 alias vim="vim -p -c 'VimFiler -split -winwidth=35 -no-quit -simple' -c 'wincmd l'"
@@ -55,8 +57,8 @@ alias gp="git push"
 alias gc="git commit"
 alias gl="git log"
 alias gco="git checkout"
-alias gcp="git checkout"
 alias re="sudo supervisorctl restart plack; tail -f /var/log/supervisor/plack/error.txt"
+alias scptest="git status | grep modified | perl -pi -e 's/\t| +/ /g' | cut -d ' ' -f 3 | perl -nle 'system(\"scp \$_ test_velet_admin:kuroneco/\$_\")'"
 
 zle -A .backward-kill-word vi-backward-kill-word
 zle -A .backward-delete-char vi-backward-delete-char
@@ -104,6 +106,7 @@ PATH=$PATH:/usr/local/libvpx/bin
 PATH=$PATH:/usr/local/ffmpeg/bin
 PATH=$PATH:/usr/local/libvpx/include/
 PATH=$PATH:/Applications/eclipse/android-sdk-macosx/platform-tools
+PATH=$PATH:/Users/shinichirousatou/pssh-2.3.1/bin
 export PATH
 
 PGDATA=/usr/local/pgsql/bin/data
@@ -113,6 +116,8 @@ export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig
 
 export AWS_RDS_HOME=/usr/local/bin/RDSCli
 export PATH=$PATH:$AWS_RDS_HOME/bin
+
+export PATH=$PATH:/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Home/bin/
 
 export AWS_CREDENTIAL_FILE=~/cretential
 

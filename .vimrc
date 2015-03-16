@@ -22,7 +22,6 @@ NeoBundle 'git://github.com/thinca/vim-quickrun'
 NeoBundle 'git://github.com/edsono/vim-matchit'
 NeoBundle 'git://github.com/Shougo/vimproc.git'
 NeoBundle 'VimClojure'
-NeoBundle 'git://github.com/vim-scripts/TwitVim'
 NeoBundle 'https://github.com/Lokaltog/vim-powerline.git'
 NeoBundle 'https://github.com/leafgarland/typescript-vim'
 NeoBundle 'git://github.com/vim-scripts/sudo.vim.git'
@@ -41,6 +40,16 @@ NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
 NeoBundle "git://github.com/tsukkee/unite-tag.git"
 NeoBundle "https://github.com/tyru/current-func-info.vim.git"
 NeoBundle "https://github.com/mattn/gist-vim.git"
+
+NeoBundle 'https://github.com/basyura/twibill.vim.git'
+NeoBundle 'https://github.com/tyru/open-browser.vim.git'
+
+NeoBundle 'https://github.com/mattn/webapi-vim.git'
+NeoBundle 'https://github.com/h1mesuke/unite-outline.git'
+NeoBundle 'https://github.com/basyura/bitly.vim.git'
+NeoBundle 'https://github.com/mattn/favstar-vim.git'
+
+NeoBundle 'https://github.com/basyura/TweetVim.git'
 
 filetype plugin on
 filetype indent on
@@ -82,10 +91,6 @@ autocmd Bufenter *.js,*.tt set ts=4 sw=4
 
 autocmd QuickFixCmdPost [^l]* nested cwindow
 autocmd QuickFixCmdPost    l* nested lwindow
-"autocmd FileType ts :compiler tsc 
-
-"let perl_fold=1
-"set foldlevel=1
 
 set clipboard+=unnamed,autoselect
 
@@ -96,8 +101,6 @@ highlight statusLine guifg=darkblue guibg=blue gui=none ctermfg=blue ctermbg=gre
 
 let g:Powerline_symbols = 'fancy'
 set guifont='SourceCodePro-Regular-Powerline'
-" let g:Powerline_stl_path_style = 'relative'
-" let g:Powerline_colorscheme='skwp'
 
 highlight vimshellPrompt guifg=darkblue guibg=blue gui=none ctermfg=blue ctermbg=grey cterm=none
 
@@ -244,9 +247,9 @@ autocmd FileType javascript :setlocal foldexpr=GetJSFold()
 autocmd FileType javascript :setlocal foldmethod=expr
 
 function GetTSFold()
-    if getline(v:lnum) =~ '^\s\{1,8}public' || getline(v:lnum) =~ '^\s\{1,8}private'
+    if getline(v:lnum) =~ '^\s\+public' || getline(v:lnum) =~ '^\s\+private' || getline(v:lnum) =~ '^\s\+protected'
         return ">1"
-    elseif getline(v:lnum) =~ '^\s\{0,8}\}\s*$'
+    elseif getline(v:lnum) =~ '^\s\{0,4}\}\s*$'
         let my_perlnum = v:lnum
         let my_perlmax = line("$")
         while (1)
@@ -258,6 +261,20 @@ function GetTSFold()
             if my_perldata =~ '^\s*\(\#.*\)\?$'
             else
                 return "<1"
+            endif
+        endwhile
+    elseif getline(v:lnum) =~ '^\s\{0,8}\}\s*$'
+        let my_perlnum = v:lnum
+        let my_perlmax = line("$")
+        while (1)
+            let my_perlnum = my_perlnum + 1
+            if my_perlnum > my_perlmax
+                return "<1"
+            endif
+            let my_perldata = getline(my_perlnum)
+            if my_perldata =~ '^\s*\(\#.*\)\?$'
+            else
+                return "<2"
             endif
         endwhile
     elseif getline(v:lnum) =~ '^\s\{0,8}\};\s*$'
@@ -306,9 +323,6 @@ nmap <C-t> :tabe<CR>:VimFiler -split -winwidth=35 -no-quit -simple<CR>:wincmd l<
 nmap <S-,><S-,> :tabprevious<cr>
 imap <S-,><S-,> <ESC>:tabprevious<cr>
 nmap <S-.><S-.> :tabn<CR>
-
-"nmap <C-g> :tabe<CR>:VimFiler -split -winwidth=35 -no-quit -simple<CR>:wincmd l<CR>:VimShell<CR>
-"imap <C-g> <ESC>:tabe<CR>:VimFiler -split -winwidth=35 -no-quit -simple<CR>:wincmd l<CR>:VimShell<CR>
 
 map <S-w> <UP><UP>
 map <S-a> <left><LEFT>
@@ -381,12 +395,6 @@ endfunction
 noremap <silent> <C-m> :<C-u>execute "PopupTags ".expand('<cword>')<CR>
 noremap <silent> <C-]> :<C-u>execute "PopupTags ".expand('<cword>')<CR>
 
-" カーソル下のワード(WORD)で ( か < か [ までが現れるまでで絞り込み
-" 例)
-" boost::array<std::stirng... → boost::array で絞り込み
-" noremap <silent> G<C-]> :<C-u>execute "PopupTags "
-"     \.substitute(<SID>get_func_name(expand('<cWORD>')), '\:', '\\\:', "g")<CR>
-
 " Uniteを開く時、垂直分割で開く
 let g:unite_winheight=10
 " ウィンドウを分割して開く
@@ -395,4 +403,22 @@ au FileType unite inoremap <silent> <buffer> <expr> <C-t> unite#do_action('tabop
 
 au FileType unite nnoremap <silent> <buffer> <expr> <C-e> unite#do_action('vsplit')
 au FileType unite inoremap <silent> <buffer> <expr> <C-e> unite#do_action('vsplit')
+
+setlocal iskeyword-=_
+
+function GetNginxFold()
+    if getline(v:lnum) =~ '^\s*location'
+        return ">1"
+    elseif getline(v:lnum) =~ '^\s*if\s*('
+        return ">2"
+    elseif getline(v:lnum) =~ '^\s{8}}'
+        return "<1"
+    elseif getline(v:lnum) =~ '^\s{12}*}'
+        return "<2"
+    else
+        return "="
+    endif
+endfunction
+autocmd FileType nginx :setlocal foldexpr=GetNginxFold()
+autocmd FileType nginx :setlocal foldmethod=expr
 
