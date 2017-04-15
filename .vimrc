@@ -1,55 +1,55 @@
-syntax on
+if &compatible
+  set nocompatible
+endif
+set runtimepath+=/root/.dein/repos/github.com/Shougo/dein.vim
 
-let perlpath='/Users/shinichirousatou/perl5/perlbrew/perls/perl-5.16.2'
-set nocompatible
-filetype off
+if dein#load_state('/root/.deinlib')
+    call dein#begin('/root/.deinlib')
+    
+    call dein#add('/root/.dein/repos/github.com/Shougo/dein.vim')
+    call dein#add('Shougo/neocomplete.vim')
+    
+    call dein#add('vim-perl/vim-perl')
+    call dein#add('hotchpotch/perldoc-vim')
+    call dein#add('Shougo/neocomplcache')
+    call dein#add('Shougo/neosnippet')
+    call dein#add('S2/neosnippet-snippets.git')
+    call dein#add('Shougo/unite.vim')
+    call dein#add('Shougo/vimfiler')
+    call dein#add('Shougo/vimshell')
+    call dein#add('thinca/vim-quickrun')
+    call dein#add('jwhitley/vim-matchit')
+    call dein#add('Shougo/vimproc.git' , {'build' : 'make'})
+    call dein#add('vim-scripts/VimClojure')
+    call dein#add('Lokaltog/vim-powerline.git')
+    call dein#add('leafgarland/typescript-vim')
+    call dein#add('vim-scripts/sudo.vim.git')
+    call dein#add('tpope/vim-fugitive')
+    call dein#add('motemen/git-vim')
+    call dein#add('vim-scripts/dbext.vim.git')
+    call dein#add('xolox/vim-misc.git')
+    call dein#add('xolox/vim-lua-ftplugin')
+    call dein#add('vim-scripts/nginx.vim.git')
+    call dein#add('bpowell/vim-android.git')
+    call dein#add('vim-scripts/javacomplete.git')
+    call dein#add('vim-scripts/java.vim.git')
+    call dein#add('vim-scripts/taglist.vim.git')
+    call dein#add("tsukkee/unite-tag.git")
+    call dein#add("tyru/current-func-info.vim.git")
+    call dein#add("mattn/gist-vim.git")
+    call dein#add('basyura/twibill.vim.git')
+    call dein#add('tyru/open-browser.vim.git')
+    call dein#add('mattn/webapi-vim.git')
+    call dein#add('h1mesuke/unite-outline.git')
+    call dein#add('basyura/bitly.vim.git')
+    call dein#add('mattn/favstar-vim.git')
 
-if has('vim_starting')
-    set runtimepath+='~/.vim/neobundle.vim.git'
-    call neobundle#rc(expand('~/.bundle'))
+    call dein#end()
+    call dein#save_state()
 endif
 
-NeoBundle 'https://github.com/vim-perl/vim-perl'
-NeoBundle 'git://github.com/hotchpotch/perldoc-vim'
-NeoBundle 'git://github.com/Shougo/neocomplcache'
-NeoBundle 'git://github.com/Shougo/neosnippet'
-NeoBundle 'https://github.com/S2/neosnippet-snippets.git'
-NeoBundle 'git://github.com/Shougo/unite.vim'
-NeoBundle 'git://github.com/Shougo/vimfiler'
-NeoBundle 'git://github.com/Shougo/vimshell'
-NeoBundle 'git://github.com/jjgod/vim-cocoa'
-NeoBundle 'git://github.com/thinca/vim-quickrun'
-NeoBundle 'git://github.com/edsono/vim-matchit'
-NeoBundle 'git://github.com/Shougo/vimproc.git'
-NeoBundle 'VimClojure'
-NeoBundle 'https://github.com/Lokaltog/vim-powerline.git'
-NeoBundle 'https://github.com/leafgarland/typescript-vim'
-NeoBundle 'git://github.com/vim-scripts/sudo.vim.git'
-NeoBundle 'https://github.com/tpope/vim-fugitive'
-NeoBundle 'https://github.com/motemen/git-vim'
-NeoBundle 'git://github.com/vim-scripts/dbext.vim.git'
-NeoBundle 'http://github.com/xolox/vim-misc.git'
-NeoBundle 'http://github.com/xolox/vim-lua-ftplugin'
-NeoBundle 'https://github.com/vim-scripts/nginx.vim.git'
-
-NeoBundle 'git://github.com/bpowell/vim-android.git'
-NeoBundle 'git://github.com/vim-scripts/javacomplete.git'
-NeoBundle 'git://github.com/vim-scripts/java.vim.git'
-NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
-
-NeoBundle "git://github.com/tsukkee/unite-tag.git"
-NeoBundle "https://github.com/tyru/current-func-info.vim.git"
-NeoBundle "https://github.com/mattn/gist-vim.git"
-
-NeoBundle 'https://github.com/basyura/twibill.vim.git'
-NeoBundle 'https://github.com/tyru/open-browser.vim.git'
-
-NeoBundle 'https://github.com/mattn/webapi-vim.git'
-NeoBundle 'https://github.com/h1mesuke/unite-outline.git'
-NeoBundle 'https://github.com/basyura/bitly.vim.git'
-NeoBundle 'https://github.com/mattn/favstar-vim.git'
-
-NeoBundle 'https://github.com/basyura/TweetVim.git'
+filetype plugin indent on
+syntax enable
 
 filetype plugin on
 filetype indent on
@@ -70,8 +70,6 @@ set cmdheight=2
 set title
 set smartindent
 colorscheme darkblue
-colorscheme wombat
-source $HOME/.bundle/vim-matchit/plugin/matchit.vim
 
 filetype on
 au BufRead,BufNewFile *.cpp setfiletype cpp
@@ -338,9 +336,6 @@ set encoding=utf-8
 
 nmap q :q<CR>
 
-let g:neocomplcache_include_paths = {
-\ 'perl' : '/Users/shinichirousatou/shirow-quiz',
-\ }
 "インクルード文のパターンを指定
 let g:neocomplcache_include_patterns = {
 \ 'perl' : '^\s*use',

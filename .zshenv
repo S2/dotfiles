@@ -10,7 +10,6 @@ setopt list_packed
 setopt list_types
 
 # lsコマンドの補完候補にも色付き表示
-eval `gdircolors`
 zstyle ':completion:*:default' list-colors ${LS_COLORS}
 # kill の候補にも色付き表示
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([%0-9]#)*=0=01;31'
@@ -44,13 +43,11 @@ alias gd="git diff"
 alias gs="git status"
 alias gcp="git cherry-pick"
 alias plack="plackup script/app.psgi -I../wanon2/lib"
-alias plack20000="plackup script/app.psgi -I../wanon2/lib -p 20000"
 alias vim="vim -p -c 'VimFiler -split -winwidth=35 -no-quit -simple' -c 'wincmd l'"
 alias vv="vim"
 alias v="vim"
 alias :wq="exit"
 alias :q="exit"
-alias rewriteer="cp /Users/shinichirousatou/Documents/workspace/hoge/論理ER.erm doc/"
 alias gm="git merge"
 alias ga="git add"
 alias gp="git push"
@@ -58,7 +55,6 @@ alias gc="git commit"
 alias gl="git log"
 alias gco="git checkout"
 alias re="sudo supervisorctl restart plack; tail -f /var/log/supervisor/plack/error.txt"
-alias scptest="git status | grep modified | perl -pi -e 's/\t| +/ /g' | cut -d ' ' -f 3 | perl -nle 'system(\"scp \$_ test_velet_admin:kuroneco/\$_\")'"
 
 zle -A .backward-kill-word vi-backward-kill-word
 zle -A .backward-delete-char vi-backward-delete-char
@@ -106,7 +102,6 @@ PATH=$PATH:/usr/local/libvpx/bin
 PATH=$PATH:/usr/local/ffmpeg/bin
 PATH=$PATH:/usr/local/libvpx/include/
 PATH=$PATH:/Applications/eclipse/android-sdk-macosx/platform-tools
-PATH=$PATH:/Users/shinichirousatou/pssh-2.3.1/bin
 export PATH
 
 PGDATA=/usr/local/pgsql/bin/data
@@ -121,22 +116,10 @@ export PATH=$PATH:/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents/Hom
 
 export AWS_CREDENTIAL_FILE=~/cretential
 
-export JAVA_HOME=`/usr/libexec/java_home -v 1.6`
-
 BOOST_PATH=/usr/local/boost
 export BOOST_PATH
 
 export GIT_MERGE_AUTOEDIT=no
 
-source ~/perl5/perlbrew/etc/bashrc
-source ~/.phpbrew/bashrc
-
-GTEST_DIR=/Users/shinichirousatou/gtesta-1.6.0
-
-eval 'cd /Users/shinichirousatou/kuroneco'
-
-if [ -d $HOME/.rbenv/bin ]; then
-    export RBENV_ROOT=$HOME/.rbenv
-    export PATH="$RBENV_ROOT/bin:$PATH"
-    eval "$(rbenv init -)"
-fi
+export PATH="$HOME/.plenv/bin:$PATH"
+eval "$(plenv init -)"
