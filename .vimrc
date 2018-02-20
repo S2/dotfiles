@@ -1,3 +1,7 @@
+
+set iskeyword=_,:,=,/,.,\",\',(,),{,},A-Z,;
+syntax on 
+
 if &compatible
   set nocompatible
 endif
@@ -416,4 +420,4 @@ endfunction
 autocmd FileType nginx :setlocal foldexpr=GetNginxFold()
 autocmd FileType nginx :setlocal foldmethod=expr
 
-set iskeyword=_,:,=,/,.,\",\',(,),{,},A-Z
+set iskeyword=_,:,=,/,.,\",\',(,),{,},A-Z,;
