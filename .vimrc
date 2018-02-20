@@ -9,7 +9,6 @@ if dein#load_state('/root/.deinlib')
     call dein#add('/root/.dein/repos/github.com/Shougo/dein.vim')
     call dein#add('Shougo/neocomplete.vim')
     
-    call dein#add('vim-perl/vim-perl')
     call dein#add('hotchpotch/perldoc-vim')
     call dein#add('Shougo/neocomplcache')
     call dein#add('Shougo/neosnippet')
@@ -417,3 +416,4 @@ endfunction
 autocmd FileType nginx :setlocal foldexpr=GetNginxFold()
 autocmd FileType nginx :setlocal foldmethod=expr
 
+set iskeyword=_,:,=,/,.,\",\',(,),{,},A-Z
