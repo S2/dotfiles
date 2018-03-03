@@ -5,12 +5,12 @@ syntax on
 if &compatible
   set nocompatible
 endif
-set runtimepath+=/root/.dein/repos/github.com/Shougo/dein.vim
+set runtimepath+=/Users/oscar/.dein/repos/github.com/Shougo/dein.vim
 
-if dein#load_state('/root/.deinlib')
-    call dein#begin('/root/.deinlib')
+if dein#load_state('/Users/oscar/.deinlib')
+    call dein#begin('/Users/oscar/.deinlib')
     
-    call dein#add('/root/.dein/repos/github.com/Shougo/dein.vim')
+    call dein#add('/Users/oscar/.dein/repos/github.com/Shougo/dein.vim')
     call dein#add('Shougo/neocomplete.vim')
     
     call dein#add('hotchpotch/perldoc-vim')
@@ -52,7 +52,6 @@ if dein#load_state('/root/.deinlib')
 endif
 
 filetype plugin indent on
-syntax enable
 
 filetype plugin on
 filetype indent on
@@ -355,7 +354,7 @@ let g:neocomplcache_enable_at_startup = 1
 
 let dbext_default_profile=""
 let dbext_default_type="MYSQL"
-let dbext_default_user="root"
+let dbext_default_user="Users/oscar"
 let dbext_default_passwd=""
 let dbext_default_dbname="kuroneco"
 let dbext_default_host="localhost"
@@ -419,5 +418,3 @@ function GetNginxFold()
 endfunction
 autocmd FileType nginx :setlocal foldexpr=GetNginxFold()
 autocmd FileType nginx :setlocal foldmethod=expr
-
-set iskeyword=_,:,=,/,.,\",\',(,),{,},A-Z,;

@@ -92,8 +92,7 @@ function rprompt-git-current-branch {
 setopt prompt_subst
 PROMPT='%F{green}%W %f %(5~,%-2~/.../%2~,%~) `rprompt-git-current-branch`# '
 
-PATH=$PATH:/var/mysql/bin/
-PATH=$PATH:/var/mysql/scripts/
+PATH=$PATH:/usr/local/mysql/bin/
 PATH=$PATH:/usr/local/pgsql/bin/
 PATH=$PATH:/usr/local/node/bin/
 PATH=$PATH:/usr/local/bin/
@@ -101,6 +100,7 @@ PATH=$PATH:/usr/local/yasm/bin
 PATH=$PATH:/usr/local/libvpx/bin
 PATH=$PATH:/usr/local/ffmpeg/bin
 PATH=$PATH:/usr/local/libvpx/include/
+PATH=$PATH:/usr/local/yarn/bin/
 PATH=$PATH:/Applications/eclipse/android-sdk-macosx/platform-tools
 export PATH
 
@@ -123,3 +123,8 @@ export GIT_MERGE_AUTOEDIT=no
 
 export PATH="$HOME/.plenv/bin:$PATH"
 eval "$(plenv init -)"
+export PATH="/usr/local/ruby/bin:$PATH"
+
+export PATH="/usr/local/FDK/Tools/osx/:$PATH"
+
+eval cd facetasm
