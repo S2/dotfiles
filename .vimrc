@@ -5,12 +5,12 @@ syntax on
 if &compatible
   set nocompatible
 endif
-set runtimepath+=/Users/oscar/.dein/repos/github.com/Shougo/dein.vim
+set runtimepath+=/Users/sato/.dein/repos/github.com/Shougo/dein.vim
 
-if dein#load_state('/Users/oscar/.deinlib')
-    call dein#begin('/Users/oscar/.deinlib')
+if dein#load_state('/Users/sato/.deinlib')
+    call dein#begin('/Users/sato/.deinlib')
     
-    call dein#add('/Users/oscar/.dein/repos/github.com/Shougo/dein.vim')
+    call dein#add('/Users/sato/.dein/repos/github.com/Shougo/dein.vim')
     call dein#add('Shougo/neocomplete.vim')
     
     call dein#add('hotchpotch/perldoc-vim')
@@ -77,14 +77,18 @@ filetype on
 au BufRead,BufNewFile *.cpp setfiletype cpp
 au BufRead,BufNewFile *.pl,*.cgi,*.pm,*.psgi setfiletype perl
 au BufRead,BufNewFile *.ts setfiletype typescript
+au BufRead,BufNewFile *.tsx setfiletype typescript
 au BufRead,BufNewFile *.conf setfiletype nginx 
 au BufRead,BufNewFile *.lua setfiletype lua 
 au BufRead,BufNewFile *.js setfiletype javascript
 au BufRead,BufNewFile *.tt,*.tt2 setfiletype html
+au BufRead,BufNewFile *.slim setfiletype ruby
 
 autocmd FileType pl,perl,cgi,pm,psgi,t :compiler perl
 autocmd FileType html,htm set ts=4 sw=4
 autocmd FileType rb  :compiler ruby
+autocmd FileType slim set ts=2 sw=2
+autocmd FileType *.slim set ts=2 sw=2
 
 autocmd Bufenter *.rb set ts=2 shiftwidth=2
 autocmd Bufenter *.js,*.tt set ts=4 sw=4
@@ -205,8 +209,10 @@ autocmd FileType pl,perl,cgi,pm,psgi,t :setlocal foldexpr=GetPerlFold()
 autocmd FileType pl,perl,cgi,pm,psgi,t :setlocal foldmethod=expr
 
 function GetJSFold()
-    if getline(v:lnum) =~ '^\s\{1,8}function' || getline(v:lnum) =~ '^.*:\s*function' || getline(v:lnum) =~ '^.*=\s*function'  
-        return ">1"
+    echo "1111111111111"
+    echo "1111111111111"
+    if getline(v:lnum) =~ '^\s\{0,8}interface' || getline(v:lnum) =~ '^\s\{1,8}function' || getline(v:lnum) =~ '^.*:\s*function' || getline(v:lnum) =~ '^.*=\s*function'  
+        1return ">1"
     elseif getline(v:lnum) =~ '^\};\s*$'
         let my_perlnum = v:lnum
         let my_perlmax = line("$")
@@ -248,6 +254,18 @@ autocmd FileType javascript :setlocal foldmethod=expr
 
 function GetTSFold()
     if getline(v:lnum) =~ '^\s\+public' || getline(v:lnum) =~ '^\s\+private' || getline(v:lnum) =~ '^\s\+protected'
+        return ">1"
+    elseif getline(v:lnum) =~ '\s*interface.*{\s*$'
+        return ">1"
+    elseif getline(v:lnum) =~ '\s*export\s+default.*{\s*$'
+        return ">1"
+    elseif getline(v:lnum) =~ '\s*export\s+class.*{\s*$'
+        return ">1"
+    elseif getline(v:lnum) =~ '\s*class.*{\s*$'
+        return ">1"
+    elseif getline(v:lnum) =~ '\s*if\s*(.*)\s*{\s*$'
+        return "="
+    elseif getline(v:lnum) =~ '\s*.*\s*(.*)\s*{\s*$'
         return ">1"
     elseif getline(v:lnum) =~ '^\s\{0,4}\}\s*$'
         let my_perlnum = v:lnum
@@ -354,7 +372,7 @@ let g:neocomplcache_enable_at_startup = 1
 
 let dbext_default_profile=""
 let dbext_default_type="MYSQL"
-let dbext_default_user="Users/oscar"
+let dbext_default_user="Users/sato"
 let dbext_default_passwd=""
 let dbext_default_dbname="kuroneco"
 let dbext_default_host="localhost"
@@ -418,3 +436,12 @@ function GetNginxFold()
 endfunction
 autocmd FileType nginx :setlocal foldexpr=GetNginxFold()
 autocmd FileType nginx :setlocal foldmethod=expr
+
+
+highlight DiffAdd    cterm=bold ctermfg=10 ctermbg=22
+highlight DiffDelete cterm=bold ctermfg=10 ctermbg=52
+highlight DiffChange cterm=bold ctermfg=10 ctermbg=17
+highlight DiffText   cterm=bold ctermfg=10 ctermbg=21
+
+set tabpagemax=1000
+
