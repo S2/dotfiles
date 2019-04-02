@@ -209,8 +209,6 @@ autocmd FileType pl,perl,cgi,pm,psgi,t :setlocal foldexpr=GetPerlFold()
 autocmd FileType pl,perl,cgi,pm,psgi,t :setlocal foldmethod=expr
 
 function GetJSFold()
-    echo "1111111111111"
-    echo "1111111111111"
     if getline(v:lnum) =~ '^\s\{0,8}interface' || getline(v:lnum) =~ '^\s\{1,8}function' || getline(v:lnum) =~ '^.*:\s*function' || getline(v:lnum) =~ '^.*=\s*function'  
         1return ">1"
     elseif getline(v:lnum) =~ '^\};\s*$'
