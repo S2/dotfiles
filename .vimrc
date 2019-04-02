@@ -208,50 +208,10 @@ endfunction
 autocmd FileType pl,perl,cgi,pm,psgi,t :setlocal foldexpr=GetPerlFold()
 autocmd FileType pl,perl,cgi,pm,psgi,t :setlocal foldmethod=expr
 
-function GetJSFold()
-    if getline(v:lnum) =~ '^\s\{0,8}interface' || getline(v:lnum) =~ '^\s\{1,8}function' || getline(v:lnum) =~ '^.*:\s*function' || getline(v:lnum) =~ '^.*=\s*function'  
-        1return ">1"
-    elseif getline(v:lnum) =~ '^\};\s*$'
-        let my_perlnum = v:lnum
-        let my_perlmax = line("$")
-        while (1)
-            let my_perlnum = my_perlnum + 1
-            if my_perlnum > my_perlmax
-                return "<1"
-            endif
-            let my_perldata = getline(my_perlnum)
-            if my_perldata =~ '^\s*\(\#.*\)\?$'
-            else
-                return "<1"
-            endif
-        endwhile
-    elseif getline(v:lnum) =~ '\}\s*$' 
-        let my_perlnum = v:lnum
-        let my_perlmax = line("$")
-        while (1)
-            let my_perlnum = my_perlnum + 1
-            if my_perlnum > my_perlmax
-                return "<1"
-            endif
-            let my_perldata = getline(my_perlnum)
-            if my_perldata =~ '^\s*\(\#.*\)\?$'
-                " do nothing
-            elseif my_perldata =~ '^\s*sub\s'
-                return "<1"
-            else
-                return "="
-            endif
-        endwhile
-    else
-        return "="
-    endif
-endfunction
-
-autocmd FileType javascript :setlocal foldexpr=GetJSFold()
-autocmd FileType javascript :setlocal foldmethod=expr
-
 function GetTSFold()
     if getline(v:lnum) =~ '^\s\+public' || getline(v:lnum) =~ '^\s\+private' || getline(v:lnum) =~ '^\s\+protected'
+        return ">1"
+    elseif getline(v:lnum) =~ '^\s\{1,8}function' || getline(v:lnum) =~ '^.*:\s*function' || getline(v:lnum) =~ '^.*=\s*function'  
         return ">1"
     elseif getline(v:lnum) =~ '\s*interface.*{\s*$'
         return ">1"
@@ -264,6 +224,8 @@ function GetTSFold()
     elseif getline(v:lnum) =~ '\s*if\s*(.*)\s*{\s*$'
         return "="
     elseif getline(v:lnum) =~ '\s*.*\s*(.*)\s*{\s*$'
+        return ">1"
+    elseif getline(v:lnum) =~ '\s*.*\s*(.*)\s*:\s*.*\s*{\s*$'
         return ">1"
     elseif getline(v:lnum) =~ '^\s\{0,4}\}\s*$'
         let my_perlnum = v:lnum
@@ -314,6 +276,9 @@ function GetTSFold()
         return "="
     endif
 endfunction
+
+autocmd FileType javascript :setlocal foldexpr=GetTSFold()
+autocmd FileType javascript :setlocal foldmethod=expr
 
 autocmd FileType typescript :setlocal foldexpr=GetTSFold()
 autocmd FileType typescript :setlocal foldmethod=expr
