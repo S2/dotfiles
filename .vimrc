@@ -14,6 +14,7 @@ if dein#load_state('/Users/sato/.deinlib')
     call dein#add('Shougo/neocomplete.vim')
     
     call dein#add('hotchpotch/perldoc-vim')
+    call dein#add('Shougo/vinarise.vim')
     call dein#add('Shougo/neocomplcache')
     call dein#add('Shougo/neosnippet')
     call dein#add('S2/neosnippet-snippets.git')
@@ -369,10 +370,10 @@ function! s:get_func_name(word)
 endfunction
 
 
-" カーソル下のワード(word)で絞り込み
-noremap <silent> <C-m> :<C-u>execute "PopupTags ".expand('<cword>')<CR>
-noremap <silent> <C-]> :<C-u>execute "PopupTags ".expand('<cword>')<CR>
-
+" " カーソル下のワード(word)で絞り込み
+" noremap <silent> <C-m> :<C-u>execute "PopupTags ".expand('<cword>')<CR>
+" noremap <silent> <C-]> :<C-u>execute "PopupTags ".expand('<cword>')<CR>
+" 
 " Uniteを開く時、垂直分割で開く
 let g:unite_winheight=10
 " ウィンドウを分割して開く
