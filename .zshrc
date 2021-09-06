@@ -52,6 +52,7 @@ alias gb="git branch"
 alias gd="git diff" 
 alias gs="git status"
 alias gcp="git cherry-pick"
+alias gml='branch=`git symbolic-ref --short HEAD`;git checkout release;git pull origin release;git checkout $branch;git merge release'
 alias plack="plackup script/app.psgi -I../wanon2/lib"
 alias vimdiff="/Users/sato/bin/vimdiff"
 alias vim="/Users/sato/bin/vim -p -c 'VimFiler -split -winwidth=35 -no-quit -simple' -c 'wincmd l'"
@@ -67,6 +68,10 @@ alias gl="git log"
 alias gco="git checkout"
 alias supervisord="supervisord -c ~/etc/supervisord.conf"
 alias supervisorctl="supervisorctl -c ~/etc/supervisord.conf"
+alias g="grep"
+alias f="find"
+alias dc="docker container ps -a | cut -d ' ' -f 1 | xargs docker kill ; docker-compose up"
+alias dk="docker container ps -a | cut -d ' ' -f 1 | xargs docker kill"
 
 # わからん。Vim互換の機能っぽいが削除しても変わらん
 zle -A .backward-kill-word vi-backward-kill-word
@@ -120,7 +125,7 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
 export PATH="$HOME/air/bin:$PATH"
-export PATH="$HOME/src/node-v10.16.0-darwin-x64/bin:$PATH"
+export PATH="$HOME/node12/bin:$PATH"
 
 export PATH="$HOME/air/atftools:$PATH"
 export PATH="$HOME/awsbin:$PATH"
@@ -134,3 +139,15 @@ export LIBRARY_PATH=/Users/sato/lib/
 export VULKAN_SDK=/Users/sato/vulkan/
 export ASSIMP_HOME=/Users/sato/assimp/
 
+export GOPATH="/Users/sato/go"
+export PATH="/Users/sato/go/bin:$PATH"
+export PATH="$HOME/pear/bin:$PATH"
+export PATH="$PATH:/Volumes/Extreme SSD/Android/platform-tools"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/sato/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/sato/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/sato/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/sato/google-cloud-sdk/completion.zsh.inc'; fi
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"

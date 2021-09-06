@@ -47,6 +47,8 @@ if dein#load_state('/Users/sato/.deinlib')
     call dein#add('h1mesuke/unite-outline.git')
     call dein#add('basyura/bitly.vim.git')
     call dein#add('mattn/favstar-vim.git')
+    call dein#add('fatih/vim-go.git')
+    call dein#add('udalov/kotlin-vim.git')
 
     call dein#end()
     call dein#save_state()
@@ -83,19 +85,35 @@ au BufRead,BufNewFile *.conf setfiletype nginx
 au BufRead,BufNewFile *.lua setfiletype lua 
 au BufRead,BufNewFile *.js setfiletype javascript
 au BufRead,BufNewFile *.tt,*.tt2 setfiletype html
+au BufRead,BufNewFile *.inc setfiletype html
 au BufRead,BufNewFile *.slim setfiletype ruby
+au BufRead,BufNewFile *.go setfiletype go
+au BufRead,BufNewFile *.neon setfiletype yaml
 
 autocmd FileType pl,perl,cgi,pm,psgi,t :compiler perl
-autocmd FileType html,htm set ts=4 sw=4
+autocmd FileType html,htm,inc set ts=2 sw=2
 autocmd FileType rb  :compiler ruby
 autocmd FileType slim set ts=2 sw=2
 autocmd FileType *.slim set ts=2 sw=2
+autocmd FileType vue set ts=2 sw=2
 
 autocmd Bufenter *.rb set ts=2 shiftwidth=2
-autocmd Bufenter *.js,*.tt set ts=4 sw=4
+autocmd Bufenter *.js,*.ts set ts=2 sw=2
+autocmd Bufenter *.jsx,*.tsx set ts=2 sw=2
+autocmd Bufenter *.neon set ts=2 sw=2
 
 autocmd QuickFixCmdPost [^l]* nested cwindow
 autocmd QuickFixCmdPost    l* nested lwindow
+
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_build_constraints = 1
+
+autocmd FileType go setlocal noexpandtab
+autocmd FileType go setlocal tabstop=4
+autocmd FileType go setlocal shiftwidth=4
+autocmd FileType go setlocal listchars=tab:»-,eol:$
 
 set clipboard+=unnamed,autoselect
 
@@ -305,6 +323,7 @@ nmap <C-t> :tabe<CR>:VimFiler -split -winwidth=35 -no-quit -simple<CR>:wincmd l<
 nmap <S-,><S-,> :tabprevious<cr>
 imap <S-,><S-,> <ESC>:tabprevious<cr>
 nmap <S-.><S-.> :tabn<CR>
+nmap <tab> :tabn<CR>
 
 map <S-w> <UP><UP>
 map <S-a> <left><LEFT>
