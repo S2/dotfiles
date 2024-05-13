@@ -54,8 +54,7 @@ alias gs="git status"
 alias gcp="git cherry-pick"
 alias gml='branch=`git symbolic-ref --short HEAD`;git checkout release;git pull origin release;git checkout $branch;git merge release'
 alias plack="plackup script/app.psgi -I../wanon2/lib"
-alias vimdiff="/Users/sato/bin/vimdiff"
-alias vim="/Users/sato/bin/vim -p -c 'VimFiler -split -winwidth=35 -no-quit -simple' -c 'wincmd l'"
+alias vim="/usr/bin/vim -p -c 'VimFiler -split -winwidth=35 -no-quit -simple' -c 'wincmd l'"
 alias vv="vim"
 alias v="vim"
 alias :wq="exit"
@@ -66,12 +65,16 @@ alias gp="git push"
 alias gc="git commit"
 alias gl="git log"
 alias gco="git checkout"
-alias supervisord="supervisord -c ~/etc/supervisord.conf"
-alias supervisorctl="supervisorctl -c ~/etc/supervisord.conf"
+alias supervisord="/Library/Frameworks/Python.framework/Versions/2.7/bin/supervisord -c ~/etc/supervisord.conf"
+alias supervisorctl="/Library/Frameworks/Python.framework/Versions/2.7/bin/supervisorctl -c ~/etc/supervisord.conf"
 alias g="grep"
 alias f="find"
-alias dc="docker container ps -a | cut -d ' ' -f 1 | xargs docker kill ; docker-compose up"
+alias dc="docker container ps -a | cut -d ' ' -f 1 | xargs docker kill ; docker compose up"
 alias dk="docker container ps -a | cut -d ' ' -f 1 | xargs docker kill"
+alias me="cd ~/metaps/cria/cria-admin-console-api/"
+alias mw="cd ~/metaps/cria/cria-web-app"
+alias mc="cd /Users/sato/metaps/cria/cria-lib-core"
+alias gu="cd ~/guncys/soqura-beta"
 
 # わからん。Vim互換の機能っぽいが削除しても変わらん
 zle -A .backward-kill-word vi-backward-kill-word
@@ -125,7 +128,7 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
 export PATH="$HOME/air/bin:$PATH"
-export PATH="$HOME/node12/bin:$PATH"
+export PATH="$HOME/node20/bin:$PATH"
 
 export PATH="$HOME/air/atftools:$PATH"
 export PATH="$HOME/awsbin:$PATH"
@@ -139,10 +142,16 @@ export LIBRARY_PATH=/Users/sato/lib/
 export VULKAN_SDK=/Users/sato/vulkan/
 export ASSIMP_HOME=/Users/sato/assimp/
 
-export GOPATH="/Users/sato/go"
-export PATH="/Users/sato/go/bin:$PATH"
+export GOPATH="/$HOME/go"
+export PATH="$GOPATH/bin:$PATH"
+export PATH="$HOME/mysql/bin:$PATH"
 export PATH="$HOME/pear/bin:$PATH"
 export PATH="$PATH:/Volumes/Extreme SSD/Android/platform-tools"
+export PATH="$PATH:$HOME/nginx/sbin/"
+
+export ANDROID_SDK_ROOT=/Users/sato/Library/Android/sdk
+export ANDROID_HOME=/Users/sato/Library/Android/sdk
+export PATH=/Users/sato/Library/Android/sdk/platform-tools:$PATH
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/sato/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/sato/google-cloud-sdk/path.zsh.inc'; fi

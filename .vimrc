@@ -1,6 +1,6 @@
 
 set iskeyword=_,:,=,/,.,\",\',(,),{,},A-Z,;
-syntax on 
+syntax on
 
 if &compatible
   set nocompatible
@@ -47,8 +47,9 @@ if dein#load_state('/Users/sato/.deinlib')
     call dein#add('h1mesuke/unite-outline.git')
     call dein#add('basyura/bitly.vim.git')
     call dein#add('mattn/favstar-vim.git')
-    call dein#add('fatih/vim-go.git')
     call dein#add('udalov/kotlin-vim.git')
+    call dein#add('jparise/vim-graphql.git') 
+    call dein#add('fatih/vim-go.git')
 
     call dein#end()
     call dein#save_state()
@@ -74,24 +75,24 @@ set ruler
 set cmdheight=2
 set title
 set smartindent
-colorscheme darkblue
+" colorscheme darkblue
 
 filetype on
 au BufRead,BufNewFile *.cpp setfiletype cpp
 au BufRead,BufNewFile *.pl,*.cgi,*.pm,*.psgi setfiletype perl
 au BufRead,BufNewFile *.ts setfiletype typescript
-au BufRead,BufNewFile *.tsx setfiletype typescript
+au BufRead,BufNewFile *.tsx set filetype=typescript
 au BufRead,BufNewFile *.conf setfiletype nginx 
 au BufRead,BufNewFile *.lua setfiletype lua 
 au BufRead,BufNewFile *.js setfiletype javascript
 au BufRead,BufNewFile *.tt,*.tt2 setfiletype html
-au BufRead,BufNewFile *.inc setfiletype html
+au BufRead,BufNewFile *.inc set filetype=html
 au BufRead,BufNewFile *.slim setfiletype ruby
 au BufRead,BufNewFile *.go setfiletype go
 au BufRead,BufNewFile *.neon setfiletype yaml
 
 autocmd FileType pl,perl,cgi,pm,psgi,t :compiler perl
-autocmd FileType html,htm,inc set ts=2 sw=2
+autocmd FileType html,htm,inc,sass set ts=2 sw=2
 autocmd FileType rb  :compiler ruby
 autocmd FileType slim set ts=2 sw=2
 autocmd FileType *.slim set ts=2 sw=2
@@ -428,3 +429,14 @@ highlight DiffText   cterm=bold ctermfg=10 ctermbg=21
 
 set tabpagemax=1000
 
+set noswapfile
+set nobackup
+set noundofile
+
+let s:dir = getcwd()
+let s:ans = findfile(".private.vim", fnameescape(s:dir) . ";")
+
+if len(s:ans) > 1
+  let s:rc = fnamemodify(s:ans, ":p:h") . "/.vimrc"
+  call feedkeys(":source".s:rc."\<cr>")
+endif
