@@ -84,7 +84,7 @@ au BufRead,BufNewFile *.ts setfiletype typescript
 au BufRead,BufNewFile *.tsx set filetype=typescript
 au BufRead,BufNewFile *.conf setfiletype nginx 
 au BufRead,BufNewFile *.lua setfiletype lua 
-au BufRead,BufNewFile *.js setfiletype javascript
+au BufRead,BufNewFile *.js,*.jsx setfiletype javascript
 au BufRead,BufNewFile *.tt,*.tt2 setfiletype html
 au BufRead,BufNewFile *.inc set filetype=html
 au BufRead,BufNewFile *.slim setfiletype ruby
@@ -93,12 +93,12 @@ au BufRead,BufNewFile *.neon setfiletype yaml
 
 autocmd FileType pl,perl,cgi,pm,psgi,t :compiler perl
 autocmd FileType html,htm,inc,sass set ts=2 sw=2
-autocmd FileType rb  :compiler ruby
+autocmd FileType rb,ruby  :compiler ruby
 autocmd FileType slim set ts=2 sw=2
 autocmd FileType *.slim set ts=2 sw=2
 autocmd FileType vue set ts=2 sw=2
 
-autocmd Bufenter *.rb set ts=2 shiftwidth=2
+autocmd Bufenter *.rb,w*.ruby  set ts=2 shiftwidth=2
 autocmd Bufenter *.js,*.ts set ts=2 sw=2
 autocmd Bufenter *.jsx,*.tsx set ts=2 sw=2
 autocmd Bufenter *.neon set ts=2 sw=2
