@@ -62,6 +62,8 @@ alias :q="exit"
 alias gm="git merge"
 alias ga="git add"
 alias gp="git push"
+alias gpc="git push origin `git branch | grep '*' | cut -d ' ' -f 2`"
+alias gmc="git pull origin `git branch | grep '*' | cut -d ' ' -f 2`"
 alias gc="git commit"
 alias gl="git log"
 alias gco="git checkout"
@@ -69,11 +71,11 @@ alias supervisord="/Library/Frameworks/Python.framework/Versions/2.7/bin/supervi
 alias supervisorctl="/Library/Frameworks/Python.framework/Versions/2.7/bin/supervisorctl -c ~/etc/supervisord.conf"
 alias g="grep"
 alias f="find"
-alias dc="docker container ps -a | cut -d ' ' -f 1 | xargs docker kill ; docker compose up"
+alias dc="docker compose up"
 alias dk="docker container ps -a | cut -d ' ' -f 1 | xargs docker kill"
 alias me="cd ~/metaps/cria/cria-admin-console-api/"
 alias mw="cd ~/metaps/cria/cria-web-app"
-alias mc="cd /Users/sato/metaps/cria/cria-lib-core"
+alias mc="cd /Users/shinichiro.sato/metaps/cria/cria-lib-core"
 alias gu="cd ~/guncys/soqura-beta"
 
 # わからん。Vim互換の機能っぽいが削除しても変わらん
@@ -116,7 +118,7 @@ setopt prompt_subst
 PROMPT='%F{green}%W %f %(5~,%-2~/.../%2~,%~) `rprompt-git-current-branch`# '
 
 # パスを通してる
-PATH=$PATH:/Users/sato/bin/:/usr/local/bin/
+PATH=$PATH:/Users/shinichiro.sato/bin/:/usr/local/bin/
 export PATH
 
 export AWS_CREDENTIAL_FILE=~/cretential
@@ -128,19 +130,24 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
 export PATH="$HOME/air/bin:$PATH"
-export PATH="$HOME/node20/bin:$PATH"
+# export PATH="$HOME/node18.18.2/bin:$PATH"
+export PATH="$HOME/node2213/bin:$PATH"
+# export PATH="$HOME/node20/bin:$PATH"
+# export PATH="$HOME/mongodb/bin:$PATH"
+export PATH="$HOME/mongodb5/bin:$PATH"
+export PATH="$HOME/mongosh/bin:$PATH"
 
 export PATH="$HOME/air/atftools:$PATH"
 export PATH="$HOME/awsbin:$PATH"
 
-export LDFLAGS=-L/Users/sato/lib
-export CPPFLAGS=-I/Users/sato/include
+# export LDFLAGS="-L/Users/shinichiro.sato/lib -L/Users/shinichiro.sato/openssl/lib"
+export CPPFLAGS=-I/Users/shinichiro.sato/include
 
-export CPATH=/Users/sato/include
-export LIBRARY_PATH=/Users/sato/lib/
+export CPATH=/Users/shinichiro.sato/include
+# export LIBRARY_PATH=/Users/shinichiro.sato/lib/
 
-export VULKAN_SDK=/Users/sato/vulkan/
-export ASSIMP_HOME=/Users/sato/assimp/
+export VULKAN_SDK=/Users/shinichiro.sato/vulkan/
+export ASSIMP_HOME=/Users/shinichiro.sato/assimp/
 
 export GOPATH="/$HOME/go"
 export PATH="$GOPATH/bin:$PATH"
@@ -149,14 +156,48 @@ export PATH="$HOME/pear/bin:$PATH"
 export PATH="$PATH:/Volumes/Extreme SSD/Android/platform-tools"
 export PATH="$PATH:$HOME/nginx/sbin/"
 
-export ANDROID_SDK_ROOT=/Users/sato/Library/Android/sdk
-export ANDROID_HOME=/Users/sato/Library/Android/sdk
-export PATH=/Users/sato/Library/Android/sdk/platform-tools:$PATH
+export ANDROID_SDK_ROOT=/Users/shinichiro.sato/Library/Android/sdk
+export ANDROID_HOME=/Users/shinichiro.sato/Library/Android/sdk
+export PATH="/Users/shinichiro.sato/Library/Android/sdk/platform-tools:$PATH"
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/sato/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/sato/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f '/Users/shinichiro.sato/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/shinichiro.sato/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/sato/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/sato/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f '/Users/shinichiro.sato/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/shinichiro.sato/google-cloud-sdk/completion.zsh.inc'; fi
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+export PATH="$HOME/openssl/bin:$PATH"
+export PATH="$HOME/cmake/bin:$PATH"
+export PATH="$HOME/nkf/bin:$PATH"
+export PATH="$HOME/mongodb-database-tools/bin:$PATH"
+export PATH="$HOME/ruby/bin:$PATH"
+export PATH="$HOME/jdk/Contents/Home/bin:$PATH"
+export PATH="$HOME/jdk/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/carthage/bin:$PATH"
+export PATH="$HOME/.deno/bin:$PATH"
+
+# export LIBRARY_PATH="$HOME/openssl/lib:$LIBRARY_PATH"
+
+export OPENSSL_CFLAGS=-Wno-error=implicit-function-declaration
+export LD_LIBRARY_PATH=$HOME/openssl/lib/
+export RUBY_CFLAGS="-w"
+
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$PATH:$HOME/.maestro/bin/
+
+export DEVELOPMENT_MBAAS_URL=http://192.168.0.136:13112/api
+. "/Users/shinichiro.sato/.deno/env"
+source "/usr/local/.zshpassword"
+
+export MONGODB_PASSWORD
+export PATH=$PATH:$HOME/.maestro/bin
+
+export NODE_NO_WARNINGS=1

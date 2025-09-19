@@ -5,12 +5,12 @@ syntax on
 if &compatible
   set nocompatible
 endif
-set runtimepath+=/Users/sato/.dein/repos/github.com/Shougo/dein.vim
+set runtimepath+=/Users/shinichiro.sato/.dein/repos/github.com/Shougo/dein.vim
 
-if dein#load_state('/Users/sato/.deinlib')
-    call dein#begin('/Users/sato/.deinlib')
+if dein#load_state('/Users/shinichiro.sato/.deinlib')
+    call dein#begin('/Users/shinichiro.sato/.deinlib')
     
-    call dein#add('/Users/sato/.dein/repos/github.com/Shougo/dein.vim')
+    call dein#add('/Users/shinichiro.sato/.dein/repos/github.com/Shougo/dein.vim')
     call dein#add('Shougo/neocomplete.vim')
     
     call dein#add('hotchpotch/perldoc-vim')
@@ -50,6 +50,7 @@ if dein#load_state('/Users/sato/.deinlib')
     call dein#add('udalov/kotlin-vim.git')
     call dein#add('jparise/vim-graphql.git') 
     call dein#add('fatih/vim-go.git')
+    call dein#add('kchmck/vim-coffee-script.git')
 
     call dein#end()
     call dein#save_state()
@@ -75,6 +76,8 @@ set ruler
 set cmdheight=2
 set title
 set smartindent
+set noswapfile
+set nobackup
 " colorscheme darkblue
 
 filetype on
@@ -356,7 +359,7 @@ let g:neocomplcache_enable_at_startup = 1
 
 let dbext_default_profile=""
 let dbext_default_type="MYSQL"
-let dbext_default_user="Users/sato"
+let dbext_default_user="Users/shinichiro.sato"
 let dbext_default_passwd=""
 let dbext_default_dbname="kuroneco"
 let dbext_default_host="localhost"
